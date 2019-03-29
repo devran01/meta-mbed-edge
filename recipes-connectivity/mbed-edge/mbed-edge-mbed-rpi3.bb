@@ -1,7 +1,5 @@
 require mbed-edge.inc
 
-COMPATIBLE_MACHINE = "raspberrypi3"
-
 PROVIDES += " virtual/mbed-edge virtual/mbed-edge-dbg "
 RPROVIDES_${PN} += " virtual/mbed-edge virtual/mbed-edge-dbg "
 
