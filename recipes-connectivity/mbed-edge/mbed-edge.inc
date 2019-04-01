@@ -9,6 +9,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://edge-core \
+           file://0001-Set-variable-EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCO.patch \
            file://toolchain.cmake "
 
 SRCREV = "0.8.0"
