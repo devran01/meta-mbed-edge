@@ -10,11 +10,13 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://edge-core \
            file://0001-Set-variable-EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCO.patch \
+           file://mbed_cloud_dev_credentials.c \
+           file://update_default_resources.c \
            file://toolchain.cmake "
 
 SRCREV = "0.8.0"
 
-RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2"
+RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2 util-linux"
 
 # Installed packages
 PACKAGES = "${PN} ${PN}-dbg"
@@ -27,13 +29,15 @@ FILES_${PN}-dbg += "/opt/arm/.debug \
 
 S = "${WORKDIR}/git"
 
-EXTRA_OECMAKE += "-DTARGET_CONFIG_ROOT=${WORKDIR} ${MBED_EDGE_CUSTOM_CMAKE_ARGUMENTS} -DFACTORY_MODE=ON -DTRACE_LEVEL=DEBUG"
+EXTRA_OECMAKE += "-DTARGET_CONFIG_ROOT=${WORKDIR} ${MBED_EDGE_CUSTOM_CMAKE_ARGUMENTS} -DDEVELOPER_MODE=ON -DTRACE_LEVEL=DEBUG
 inherit cmake
 
 do_configure_prepend() {
     cd ${S}
     git submodule init
     git submodule update
+    cp ${WORKDIR}/mbed_cloud_dev_credentials.c ${WORKDIR}/git/config/mbed_cloud_dev_credentials.c
+    cp ${WORKDIR}/update_default_resources.c ${WORKDIR}/git/config/update_default_resources.c
     cd ${WORKDIR}/build
 }
 
