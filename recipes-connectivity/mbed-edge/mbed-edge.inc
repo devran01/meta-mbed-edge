@@ -16,7 +16,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
 
 SRCREV = "0.8.0"
 
-RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2 util-linux"
+RDEPENDS_${PN} = " procps start-stop-daemon bash tar bzip2 xz util-linux"
 
 # Installed packages
 PACKAGES = "${PN} ${PN}-dbg"
