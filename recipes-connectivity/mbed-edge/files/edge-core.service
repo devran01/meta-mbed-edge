@@ -1,0 +1,14 @@
+# Copyright (c) 2019 Arm Limited and Contributors. All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+[Unit]
+Description=Pelion Edge core
+After=mbl-app-update-manager.service
+
+[Service]
+RemainAfterExit=yes
+ExecStart=/opt/arm/edge-core
+
+[Install]
+WantedBy=multi-user.target

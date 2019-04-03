@@ -12,6 +12,7 @@ SRC_URI = "git://git@github.com/ARMmbed/mbed-edge.git;protocol=ssh; \
            file://0001-Set-variable-EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCO.patch \
            file://mbed_cloud_dev_credentials.c \
            file://update_default_resources.c \
+           file://edge-core.service \
            file://toolchain.cmake "
 
 SRCREV = "0.8.0"
@@ -26,6 +27,10 @@ FILES_${PN} += "/opt \
 
 FILES_${PN}-dbg += "/opt/arm/.debug \
                     /usr/src/debug/mbed-edge"
+
+inherit systemd
+
+SYSTEMD_SERVICE_${PN} = "edge-core.service"
 
 S = "${WORKDIR}/git"
 
@@ -47,5 +52,8 @@ do_install() {
 
     install -d "${D}${sysconfdir}/logrotate.d"
     install -m 644 "${WORKDIR}/edge-core" "${D}${sysconfdir}/logrotate.d"
+
+    install -d "${D}${systemd_unitdir}/system/"
+    install -m 0644 "${WORKDIR}/edge-core.service" "${D}${systemd_unitdir}/system/"
 }
 
