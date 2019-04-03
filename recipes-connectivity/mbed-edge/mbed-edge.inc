@@ -50,10 +50,14 @@ do_install() {
     install -d "${D}/opt/arm"
     install "${WORKDIR}/build/bin/edge-core" "${D}/opt/arm"
 
-    install -d "${D}${sysconfdir}/logrotate.d"
-    install -m 644 "${WORKDIR}/edge-core" "${D}${sysconfdir}/logrotate.d"
-
     install -d "${D}${systemd_unitdir}/system/"
     install -m 0644 "${WORKDIR}/edge-core.service" "${D}${systemd_unitdir}/system/"
 }
 
+# Add a logrotate config files
+MBL_LOGROTATE_CONFIG_LOG_NAMES = "edge-core"
+
+MBL_LOGROTATE_CONFIG_LOG_PATH[edge-core] = "/var/log/edge-core.log"
+MBL_LOGROTATE_CONFIG_SIZE[edge-core] ?= "1M"
+MBL_LOGROTATE_CONFIG_ROTATE[edge-core] ?= "4"
+MBL_LOGROTATE_CONFIG_POSTROTATE[edge-core] = "/usr/bin/killall -HUP edge-core"

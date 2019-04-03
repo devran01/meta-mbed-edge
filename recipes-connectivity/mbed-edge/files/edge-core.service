@@ -9,6 +9,8 @@ After=mbl-app-update-manager.service
 [Service]
 RemainAfterExit=yes
 ExecStart=/opt/arm/edge-core
+StandardOutput=file:/var/log/edge-core.log
+StandardError=file:/var/log/edge-core.log
 
 [Install]
 WantedBy=multi-user.target
