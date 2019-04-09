@@ -7,6 +7,7 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=1dece7821bf3fd70fe1309eaa3
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI = "git://git@github.com/ARMmbed/mbed-edge-examples.git;protocol=ssh; \
+           file://0001-Set-variable-EVENT__HAVE_WAITPID_WITH_WNOWAIT_EXITCO.patch;patchdir=../git/lib/mbed-edge \
            file://pt-example \
            file://blept-example \
            file://blept-devices.json"
@@ -31,9 +32,18 @@ RDEPENDS_${PN} = " procps start-stop-daemon bash bluez5 virtual/mbed-edge"
 EXTRA_OECMAKE += " -DTARGET_TOOLCHAIN=yocto ${MBED_EDGE_CUSTOM_CMAKE_ARGUMENTS} "
 inherit cmake
 
+do_clone_submodules() {
+    CUR_DIR=$(pwd)
+    cd "${WORKDIR}/git"
+    SSH_AUTH_SOCK=${SSH_AUTH_SOCK} git submodule update --init --recursive
+    echo ${CUR_DIR}
+    cd ${CUR_DIR}
+}
+
+addtask do_clone_submodules after do_unpack before do_patch
+
 do_configure_prepend() {
     cd ${S}
-    git submodule update --init --recursive
     cd ${WORKDIR}/build
 }
 
